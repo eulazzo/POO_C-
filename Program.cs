@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿
+
+using System.Globalization;
 using System.Text;
 namespace APOO
 {
@@ -6,35 +8,59 @@ namespace APOO
   {
     public static void Main(string[] args)
     {
+      Product prod = new Product();
+      Console.Write($"Add Product Info: ");
 
-      Person person_1 = new Person();
-      Person person_2 = new Person();
+      prod.Name = Console.ReadLine();
+      prod.Price = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+      prod.Quantity = int.Parse(Console.ReadLine());
+      prod.ShowProductInfo();
 
-      Console.WriteLine("First Person Data: ");
-      Console.Write("Name: ");
-      person_1.Name = Console.ReadLine();
-      Console.Write("Age: ");
-      person_1.Age = int.Parse(Console.ReadLine());
+      Console.Write($"How much product do you want to add in stock: ");
+      int addQuantity = int.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+      prod.AddProduct(addQuantity);
+      prod.ShowProductInfo();
 
-      Console.Write("Second Person Data: ");
+      Console.Write($"How much product do you want to remove in stock: ");
+      int removeQuantity = int.Parse(Console.ReadLine());
+      prod.RemoveProduct(removeQuantity);
+      prod.ShowProductInfo();
 
-      Console.Write("Name: ");
-      person_2.Name = Console.ReadLine();
-      Console.Write("Age: ");
-      person_2.Age = int.Parse(Console.ReadLine());
-
-      if (person_1.Age > person_2.Age)
-        Console.WriteLine($"Old Person: {person_1.Name}");
-      else
-        Console.WriteLine($"Old Person: {person_2.Name}");
     }
 
-    class Person
+    class Product
     {
       public string Name;
-      public int Age;
+      public double Price;
+      public int Quantity;
+
+      public double QuantityInStock()
+      {
+        return Price * Quantity;
+      }
+
+      public void AddProduct(int quantity)
+      {
+        Quantity += quantity;
+      }
+
+      public void RemoveProduct(int quantity)
+      {
+        if (Quantity > quantity)
+          Quantity -= quantity;
+      }
+
+      public void ShowProductInfo()
+      {
+        Console.WriteLine("Name: " + Name);
+        Console.WriteLine("Price: $" + Price.ToString("F2", CultureInfo.InvariantCulture));
+        Console.WriteLine("Quantity: " + Quantity);
+        Console.WriteLine($"Total: ${QuantityInStock().ToString("F2", CultureInfo.InvariantCulture)}\n");
+      }
 
     }
+
 
   }
 }
+
